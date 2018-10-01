@@ -7,6 +7,7 @@ import lesson1.task1.sqr
 import lesson4.task1.abs
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 /**
@@ -71,7 +72,7 @@ fun ageDescription(age: Int): String = when {
     age % 10 == 1 -> "$age год"
     age % 10 in 2..4 -> "$age года"
     age % 10 > 4 -> "$age лет"
-    else -> ""
+    else -> "$age лет"
 }
 
 /**
@@ -88,10 +89,10 @@ fun timeForHalfWay(t1: Double, v1: Double,
     val s2 = v2 * t2
     val s3 = v3 * t3
     val allS = s1 + s2 + s3
-    when {
-        (allS / 2 > s1) && (allS / 2 <= s1 + s2) -> return (allS / 2 - s1) / v2 + t1
-        allS / 2 <= s1 -> return (allS / 2 / v1)
-        else -> return (allS / 2 - s1 - s2) / v3 + t1 + t2
+    return when {
+        (allS / 2 > s1) && (allS / 2 <= s1 + s2) -> (allS / 2 - s1) / v2 + t1
+        allS / 2 <= s1 -> (allS / 2 / v1)
+        else -> (allS / 2 - s1 - s2) / v3 + t1 + t2
 
     }
 }
@@ -150,7 +151,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
         sqr(maxside) > sqr(averageside) + sqr(minside) -> 2
         sqr(maxside) == sqr(averageside) + sqr(minside) -> 1
         sqr(maxside) < sqr(averageside) + sqr(minside) -> 0
-        else -> 1
+        else -> -1
     }
 }
 
@@ -163,17 +164,6 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    val sectionCD = d - c
-    val sectionAB = b - a
-    return when {
-        c > b || a > d -> -1
-        b >= d && c >= a -> sectionCD
-        d >= b && a >= c -> sectionAB
-        c >= a && d >= b -> b - c
-        a >= c && b >= d -> d - a
-        else -> 0
-    }
-}
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = max(-1, min(b, d) - max(a, c))
 
 

@@ -139,6 +139,7 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
         else -> 0
     }
 }
+
 /**
  * Простая
  *
@@ -151,15 +152,16 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val maxside = maxOf(a, b, c)
     val minside = minOf(a, b, c)
     val averageside = a + b + c - maxside - minside
+    val temp = maxside * maxside * 2 - minside * minside - averageside * averageside - maxside * maxside
+    if (maxside > minside + averageside) {
+        return -1
+    }
     return when {
-        maxside > minside + averageside -> -1
-        sqr(maxside) > sqr(averageside) + sqr(minside) -> 2
-        sqr(maxside) == sqr(averageside) + sqr(minside) -> 1
-        sqr(maxside) < sqr(averageside) + sqr(minside) -> 0
-        else -> -1
+        temp > 0 -> 2
+        temp < 0 -> 0
+        else -> 1
     }
 }
-
 
 /**
  * Средняя

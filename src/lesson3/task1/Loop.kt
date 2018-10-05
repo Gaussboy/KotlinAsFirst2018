@@ -88,7 +88,7 @@ fun digitNumber(n: Int): Int {
 fun fib(n: Int): Int {
     var num1 = 1
     var num2 = 1
-    for (i in 2 until n){
+    for (i in 2 until n) {
         num2 += num1
         num1 = num2 - 1
     }
@@ -101,21 +101,29 @@ fun fib(n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun leastcommonmultiple (m: Int, n: Int): Int {
+    return if (n == 0) m else leastcommonmultiple(n, m % n)
+}
+fun lcm(m: Int, n: Int): Int = m * n / leastcommonmultiple(m, n)
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+var divider = if (n % 2 == 0) 2 else 3
+while (divider <= Math.sqrt(n.toDouble()) + 1)
+if (n % divider == 0) return divider else divider += 2
+if (n % divider == 0) return divider else return n
+}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -124,7 +132,7 @@ fun maxDivisor(n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean = leastcommonmultiple(m, n) == 1
 
 /**
  * Простая
@@ -133,7 +141,15 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    var square = false
+    for (i in m..n)
+        if (Math.sqrt(i.toDouble()) * 10 % 10 == 0.0) {
+            square = true
+            break
+        }
+    return square
+}
 
 /**
  * Средняя
@@ -151,7 +167,15 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var temp = x
+    var steps = 0
+    while (temp != 1) {
+        if (temp % 2 ==0) temp /= 2 else temp = temp * 3 + 1
+        steps++
+    }
+    return steps
+}
 
 /**
  * Средняя

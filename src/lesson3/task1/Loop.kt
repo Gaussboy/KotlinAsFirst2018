@@ -94,9 +94,9 @@ fun fib(n: Int): Int {
     var num2 = 1
     for (i in 2 until n) {
         num2 += num1
-        num1 = num2 - 1
+        num1 = num2 - num1
     }
-    return num1
+    return num2
 }
 
 /**

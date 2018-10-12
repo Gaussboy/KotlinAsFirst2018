@@ -105,8 +105,8 @@ fun fib(n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun LeastCommonMultiple (m: Int, n: Int): Int = if (n == 0) m else LeastCommonMultiple(n, m % n)
-fun lcm(m: Int, n: Int): Int = m * n / LeastCommonMultiple(m, n)
+fun leastCommonMultiple (m: Int, n: Int): Int = if (n == 0) m else leastCommonMultiple(n, m % n)
+fun lcm(m: Int, n: Int): Int = m * n / leastCommonMultiple(m, n)
 
 /**
  * Простая
@@ -135,7 +135,7 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = LeastCommonMultiple(m, n) == 1
+fun isCoPrime(m: Int, n: Int): Boolean = leastCommonMultiple(m, n) == 1
 
 /**
  * Простая
@@ -147,7 +147,7 @@ fun isCoPrime(m: Int, n: Int): Boolean = LeastCommonMultiple(m, n) == 1
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var square = false
     for (i in m..n)
-        if (Math.sqrt(i.toDouble()) * 10 % 10 == 0.0) {
+        if (ceil(sqrt(i.toDouble())) == sqrt(i.toDouble())) {
             square = true
             break
         }
@@ -236,8 +236,20 @@ fun isPalindrome(n: Int): Boolean = (n == revert(n))
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
-
+fun hasDifferentDigits(n: Int): Boolean {
+    var n2 = n / 10
+    var res = false
+    var previous = n % 10
+    while (n2 > 0)
+        if (previous == n2 % 10) {
+            previous = n2 % 10
+            n2 /= 10
+        } else {
+            res = true
+            break
+        }
+    return res
+}
 /**
  * Сложная
  *

@@ -4,6 +4,9 @@ package lesson3.task1
 
 import kotlin.math.abs
 import kotlin.math.sqrt
+import lesson1.task1.sqr
+import kotlin.math.PI
+import kotlin.math.ceil
 
 /**
  * Пример
@@ -73,7 +76,8 @@ fun digitNumber(n: Int): Int {
     var N = abs(n)
     if (N == 0) counter = 1
     while (N > 0) {
-        N /= 10; counter += 1
+        N /= 10
+        counter += 1
     }
     return counter
 }
@@ -101,10 +105,8 @@ fun fib(n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun leastcommonmultiple (m: Int, n: Int): Int {
-    return if (n == 0) m else leastcommonmultiple(n, m % n)
-}
-fun lcm(m: Int, n: Int): Int = m * n / leastcommonmultiple(m, n)
+fun LeastCommonMultiple (m: Int, n: Int): Int = if (n == 0) m else LeastCommonMultiple(n, m % n)
+fun lcm(m: Int, n: Int): Int = m * n / LeastCommonMultiple(m, n)
 
 /**
  * Простая
@@ -112,11 +114,12 @@ fun lcm(m: Int, n: Int): Int = m * n / leastcommonmultiple(m, n)
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-var divider = if (n % 2 == 0) 2 else 3
-while (divider <= Math.sqrt(n.toDouble()) + 1)
-if (n % divider == 0) return divider else divider += 2
-if (n % divider == 0) return divider else return n
+    var divider = if (n % 2 == 0) 2 else 3
+    while (divider <= Math.sqrt(n.toDouble()) + 1)
+        if (n % divider == 0) return divider else divider += 2
+    return if (n % divider == 0) divider else n
 }
+
 
 /**
  * Простая
@@ -132,7 +135,7 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = leastcommonmultiple(m, n) == 1
+fun isCoPrime(m: Int, n: Int): Boolean = LeastCommonMultiple(m, n) == 1
 
 /**
  * Простая
@@ -202,7 +205,17 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var n2 = n
+    var res = 0
+    while (n2 != 0) {
+        res *= 10
+        res += n2 % 10
+        n2 /= 10
+    }
+    return res
+}
+
 
 /**
  * Средняя
@@ -213,7 +226,7 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean = (n == revert(n))
 
 /**
  * Средняя

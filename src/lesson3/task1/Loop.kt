@@ -187,7 +187,22 @@ fun collatzSteps(x: Int): Int {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun lesserAngle(angle: Double) = angle % (2 * PI)
+fun sin(x: Double, eps: Double): Double {
+    var angle = lesserAngle(x)
+    var answer = angle
+    var add: Double
+    var multiplier = -1
+    var powAndFactorial = 3.0
+    do {
+        add = multiplier * Math.pow(angle, powAndFactorial) / factorial(powAndFactorial.toInt())
+        multiplier *= -1
+        powAndFactorial += 2
+        answer += add
+    } while (Math.abs(add) > eps)
+    return answer
+}
+
 
 /**
  * Средняя
@@ -196,7 +211,20 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var angle = lesserAngle(x)
+    var add: Double
+    var answer = 1.0
+    var multiplier = -1.0
+    var powAndFactorial = 2.0
+    do {
+        add = multiplier * Math.pow(angle, powAndFactorial) / factorial(powAndFactorial.toInt())
+        multiplier *= -1.0
+        powAndFactorial += 2.0
+        answer += add
+    } while (Math.abs(add) > eps)
+    return answer
+}
 
 /**
  * Средняя

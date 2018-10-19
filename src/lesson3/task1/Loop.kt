@@ -270,7 +270,6 @@ fun hasDifferentDigits(n: Int): Boolean {
     var previous = n % 10
     while (n2 > 0)
         if (previous == n2 % 10) {
-            previous = n2 % 10
             n2 /= 10
         } else {
             res = true

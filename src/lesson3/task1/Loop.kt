@@ -189,15 +189,13 @@ fun collatzSteps(x: Int): Int {
  */
 fun lesserAngle(angle: Double) = angle % (2 * PI)
 fun sin(x: Double, eps: Double): Double {
-    var angle = lesserAngle(x)
+    val angle = lesserAngle(x)
     var answer = angle
-    var add: Double
-    var multiplier = -1
-    var powAndFactorial = 3.0
+    var add = angle
+    var counter = 3
     do {
-        add = multiplier * Math.pow(angle, powAndFactorial) / factorial(powAndFactorial.toInt())
-        multiplier *= -1
-        powAndFactorial += 2
+        add *= -1 * sqr(angle) / ((counter - 1) * counter)
+        counter += 2
         answer += add
     } while (Math.abs(add) > eps)
     return answer
@@ -212,15 +210,13 @@ fun sin(x: Double, eps: Double): Double {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
-    var angle = lesserAngle(x)
-    var add: Double
+    val angle = lesserAngle(x)
     var answer = 1.0
-    var multiplier = -1.0
-    var powAndFactorial = 2.0
+    var add = 1.0
+    var counter = 2.0
     do {
-        add = multiplier * Math.pow(angle, powAndFactorial) / factorial(powAndFactorial.toInt())
-        multiplier *= -1.0
-        powAndFactorial += 2.0
+        add *= -1.0 * sqr(angle) / ((counter - 1) * counter)
+        counter += 2.0
         answer += add
     } while (Math.abs(add) > eps)
     return answer
@@ -267,7 +263,7 @@ fun isPalindrome(n: Int): Boolean = (n == revert(n))
 fun hasDifferentDigits(n: Int): Boolean {
     var n2 = n / 10
     var res = false
-    var previous = n % 10
+    val previous = n % 10
     while (n2 > 0)
         if (previous == n2 % 10) {
             n2 /= 10

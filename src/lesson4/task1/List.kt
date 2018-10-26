@@ -116,8 +116,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = if (v.isEmpty()) 0.0
-else sqrt(v.map { it * it }.sum())
+fun abs(v: List<Double>): Double = sqrt(v.map { it * it }.sum())
 
 /**
  * Простая
@@ -152,8 +151,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  */
 fun times(a: List<Double>, b: List<Double>): Double {
     var c = 0.0
-    if (a.isEmpty() && b.isEmpty()) 0.0
-    else for (i in 0 until a.size) c += a[i] * b[i]
+    for (i in 0 until a.size) c += a[i] * b[i]
     return c
 }
 
@@ -168,8 +166,7 @@ fun times(a: List<Double>, b: List<Double>): Double {
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var poly = 0.0
-    if (p.isEmpty()) 0.0
-    else for (i in 0 until p.size) {
+    for (i in 0 until p.size) {
         poly += p[i] * pow(x, i.toDouble())
     }
     return poly
@@ -187,11 +184,10 @@ fun polynom(p: List<Double>, x: Double): Double {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> {
-    var mutlist = 0.0
-    if (list.isEmpty()) list
-    else for (i in 0 until list.size) {
-        mutlist += list[i]
-        list[i] = mutlist
+    var mutableList = 0.0
+    for (i in 0 until list.size) {
+        mutableList += list[i]
+        list[i] = mutableList
     }
     return list
 }
@@ -204,13 +200,14 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
+    var i = 2
     var dividend = n
     val list = mutableListOf<Int>()
-    for (i in 2..dividend) {
-        while (dividend % i == 0) {
+    while (dividend > 1) {
+        if (dividend % i == 0) {
             list.add(i)
             dividend /= i
-        }
+        } else i++
     }
     return list
 }
@@ -256,7 +253,7 @@ fun convert(n: Int, base: Int): List<Int> {
 val latinLetters = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q",
         "r", "s", "t", "u", "v", "w", "x", "y", "z")
 
-fun convertToString(n: Int, base: Int) = convert(n, base).joinToString( separator = "",
+fun convertToString(n: Int, base: Int) = convert(n, base).joinToString(separator = "",
         transform = { if (it < 10) it.toString() else latinLetters[it - 10] })
 
 /**

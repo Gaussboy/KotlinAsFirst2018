@@ -250,11 +250,8 @@ fun convert(n: Int, base: Int): List<Int> {
  * строчными буквами: 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
-val latinLetters = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q",
-        "r", "s", "t", "u", "v", "w", "x", "y", "z")
-
-fun convertToString(n: Int, base: Int) = convert(n, base).joinToString(separator = "",
-        transform = { if (it < 10) it.toString() else latinLetters[it - 10] })
+fun convertToString(n: Int, base: Int) = convert(n, base).joinToString(separator = "")
+{ if (it >= 10) ('a' + it - 10).toString() else "$it" }
 
 /**
  * Средняя
@@ -263,7 +260,8 @@ fun convertToString(n: Int, base: Int) = convert(n, base).joinToString(separator
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int = digits.foldRightIndexed(0)
+{ i, element, acc -> acc + element * (pow(base.toDouble(), (digits.size - 1 - i).toDouble())).toInt() }
 
 /**
  * Сложная
@@ -274,7 +272,15 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+const val chars = "0123456789abcdefghijklmnopqrstuvwxyz"
+fun powIntNaturalBase(a: Int, b: Int): Int {
+    if (b < 0) return 0
+    var result = 1
+    repeat(b) { result *= a }
+    return result
+}
+fun decimalFromString(str: String, base: Int): Int =  str.reversed().mapIndexed { i, c ->
+    chars.indexOf(c) * powIntNaturalBase(base, i) }.sum()
 
 /**
  * Сложная
@@ -284,8 +290,34 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
-
+fun roman(n: Int): String {
+    val symbols = sortedMapOf(
+            1 to "I",
+            4 to "IV",
+            5 to "V",
+            9 to "IX",
+            10 to "X",
+            40 to "XL",
+            50 to "L",
+            90 to "XC",
+            100 to "C",
+            400 to "CD",
+            500 to "D",
+            900 to "CM",
+            1000 to "M")
+    var decValue = n
+    val str = StringBuilder()
+    while (decValue > 0) {
+        val key = symbols.keys.last()
+        if (decValue >= key) {
+            str.append(symbols[key])
+            decValue -= key
+        } else {
+            symbols.remove(key)
+        }
+    }
+    return str.toString()
+}
 /**
  * Очень сложная
  *
@@ -293,4 +325,73 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun points(n: Int, female: Boolean): String =
+        when (n) {
+            1 -> if (!female) "один" else "одна"
+            2 -> if (!female) "два" else "две"
+            3 -> "три"
+            4 -> "четыре"
+            5 -> "пять"
+            6 -> "шесть"
+            7 -> "семь"
+            8 -> "восемь"
+            9 -> "девять"
+            else -> ""
+        }
+
+fun tens(n: Int): String =
+        when (n) {
+            10 -> "десять"
+            11 -> "одиннадцать"
+            12 -> "двенадцать"
+            13 -> "тринадцать"
+            14 -> "четырнадцать"
+            15 -> "пятнадцать"
+            16 -> "шестнадцать"
+            17 -> "семнадцать"
+            18 -> "восемнадцать"
+            19 -> "девятнадцать"
+            in 20..29 -> "двадцать"
+            in 30..39 -> "тридцать"
+            in 40..49 -> "сорок"
+            in 50..59 -> "пятьдесят"
+            in 60..69 -> "шестьдесят"
+            in 70..79 -> "семьдесят"
+            in 80..89 -> "восемьдесят"
+            in 90..99 -> "девяносто"
+            else -> ""
+        }
+fun hundreds(n: Int): String =
+        when (n) {
+            1 -> "сто"
+            2 -> "двести"
+            3 -> "триста"
+            4 -> "четыреста"
+            in 5..9 -> "${points(n, false)}сот"
+            else -> ""
+        }
+fun keyword(n: Int): String =
+        when {
+            n == 0 -> ""
+            ((n % 100 in 5..20) || n % 10 == 0 || n % 10 > 4) -> "тысяч"
+            n % 10 == 1 -> "тысяча"
+            else -> "тысячи"
+        }
+
+fun russian(n: Int): String {
+    val list: MutableList<String> = mutableListOf()
+    val thousands = n / 1000
+    val thTens = thousands % 100
+    val remainder = n % 1000
+    val remTens = remainder % 100
+
+
+    list.add(hundreds(thousands / 100))
+    list.add(tens(thTens))
+    if (thTens !in 11..19) list.add(points(thousands % 10, true))
+    list.add(keyword(thousands))
+    list.add(hundreds(remainder / 100))
+    list.add(tens(remTens))
+    if (remTens !in 11..19) list.add(points(remainder % 10, false))
+    return list.filter { it != "" }.joinToString(separator = " ")
+}

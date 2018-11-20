@@ -2,8 +2,16 @@
 
 package lesson4.task1
 
+import javafx.beans.binding.Bindings.isNotEmpty
+import jdk.nashorn.internal.objects.NativeArray.indexOf
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
+import lesson3.task1.digitCountInNumber
+import lesson3.task1.digitNumber
+import lesson3.task1.isPrime
 import java.lang.Math.pow
+import java.util.Collections.reverse
+import java.util.Collections.swap
 import kotlin.math.sqrt
 
 /**
@@ -200,16 +208,18 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
+    var n1 = n
     var i = 2
-    var dividend = n
-    val list = mutableListOf<Int>()
-    while (dividend > 1) {
-        if (dividend % i == 0) {
-            list.add(i)
-            dividend /= i
-        } else i++
+    val res = mutableListOf<Int>()
+    while (!isPrime(n1) && i <= sqrt(n1.toDouble()).toInt()) {
+        while (n1 % i == 0) {
+            res.add(i)
+            n1 /= i
+        }
+        i++
     }
-    return list
+    if (n1 != 1) res.add(n1)
+    return res
 }
 
 /**
@@ -272,15 +282,13 @@ fun decimal(digits: List<Int>, base: Int): Int = digits.foldRightIndexed(0)
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-const val chars = "0123456789abcdefghijklmnopqrstuvwxyz"
-fun powIntNaturalBase(a: Int, b: Int): Int {
-    if (b < 0) return 0
-    var result = 1
-    repeat(b) { result *= a }
-    return result
+fun charToInt(i: Char): Int = when (i) {
+    in '0'..'9' -> i - '0'
+    else -> i - 'a' + 10
 }
-fun decimalFromString(str: String, base: Int): Int =  str.reversed().mapIndexed { i, c ->
-    chars.indexOf(c) * powIntNaturalBase(base, i) }.sum()
+
+fun decimalFromString(str: String, base: Int): Int =
+        decimal((str.map { charToInt(it) }), base)
 
 /**
  * Сложная

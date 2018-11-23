@@ -2,16 +2,10 @@
 
 package lesson4.task1
 
-import javafx.beans.binding.Bindings.isNotEmpty
-import jdk.nashorn.internal.objects.NativeArray.indexOf
 import lesson1.task1.discriminant
-import lesson1.task1.sqr
-import lesson3.task1.digitCountInNumber
-import lesson3.task1.digitNumber
 import lesson3.task1.isPrime
+import lesson3.task1.minDivisor
 import java.lang.Math.pow
-import java.util.Collections.reverse
-import java.util.Collections.swap
 import kotlin.math.sqrt
 
 /**
@@ -209,17 +203,13 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
  */
 fun factorize(n: Int): List<Int> {
     var n1 = n
-    var i = 2
     val res = mutableListOf<Int>()
-    while (!isPrime(n1) && i <= sqrt(n1.toDouble()).toInt()) {
-        while (n1 % i == 0) {
-            res.add(i)
-            n1 /= i
-        }
-        i++
+    while (n1 != 1) {
+        val min = minDivisor(n1)
+        res.add(min)
+        n1 /= min
     }
-    if (n1 != 1) res.add(n1)
-    return res
+return res
 }
 
 /**
@@ -326,6 +316,7 @@ fun roman(n: Int): String {
     }
     return str.toString()
 }
+
 /**
  * Очень сложная
  *
@@ -369,6 +360,7 @@ fun tens(n: Int): String =
             in 90..99 -> "девяносто"
             else -> ""
         }
+
 fun hundreds(n: Int): String =
         when (n) {
             1 -> "сто"
@@ -378,6 +370,7 @@ fun hundreds(n: Int): String =
             in 5..9 -> "${points(n, false)}сот"
             else -> ""
         }
+
 fun keyword(n: Int): String =
         when {
             n == 0 -> ""

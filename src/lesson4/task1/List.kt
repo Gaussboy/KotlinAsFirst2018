@@ -3,7 +3,6 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import lesson3.task1.isPrime
 import lesson3.task1.minDivisor
 import java.lang.Math.pow
 import kotlin.math.sqrt

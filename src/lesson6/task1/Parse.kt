@@ -152,7 +152,9 @@ else ""
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {if (!Regex("""[\d%\-\s]+""").matches(jumps)) return -1
+val part = (Regex("""[^\d]""").split(jumps))
+return part.filter { it.toIntOrNull() != null }.map { it.toInt() }.max()!!}
 
 /**
  * Сложная

@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 /**
  * Пример
  *
@@ -49,12 +51,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -71,7 +71,27 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val parts = str.split(" ")
+    if (parts.size != 3) return ""
+    val month = when (parts[1]) {
+        "января" -> "01"
+        "февраля" -> "02"
+        "марта" -> "03"
+        "апреля" -> "04"
+        "мая" -> "05"
+        "июня" -> "06"
+        "июля" -> "07"
+        "августа" -> "08"
+        "сентября" -> "09"
+        "октября" -> "10"
+        "ноября" -> "11"
+        "декабря" -> "12"
+        else -> ""
+    }
+    return if (month == "" || daysInMonth(month.toInt(), parts[2].toInt()) < parts[0].toInt()) ""
+    else String.format("%02d.%s.%s", parts[0].toInt(), month, parts[2])
+}
 
 /**
  * Средняя
@@ -83,7 +103,27 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val parts = digital.split(".")
+    if (parts.size != 3) return ""
+    val month = when (parts[1]) {
+        "01" -> "января"
+        "02" -> "февраля"
+        "03" -> "марта"
+        "04" -> "апреля"
+        "05" -> "мая"
+        "06" -> "июня"
+        "07" -> "июля"
+        "08" -> "августа"
+        "09" -> "сентября"
+        "10" -> "октября"
+        "11" -> "ноября"
+        "12" -> "декабря"
+        else -> ""
+    }
+    return if (month == "" || daysInMonth(parts[1].toInt(), parts[2].toInt()) < parts[0].toInt()) ""
+    else String.format("%d %s %s", parts[0].toInt(), month, parts[2])
+}
 
 /**
  * Средняя
@@ -97,7 +137,10 @@ fun dateDigitToStr(digital: String): String = TODO()
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String =
+        if (Regex("""(?:\+(?:[\s-]*\d)+[\s-]*)?(?:\((?:[\s-]*\d)+[\s-]*\))?(?:[\s-]*\d)+""").matches(phone))
+            Regex("""[\s-()]""").replace(phone, "")
+else ""
 
 /**
  * Средняя
@@ -156,7 +199,13 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    if (!Regex("""^\S.*\d$""").matches(description)) return ""
+    val piece = description.split("; ")
+    val k = piece.map { it.split(" ") }
+    if (k.any { it.size != 2 || it[1].toDouble() < 0 || it[1].toDoubleOrNull() == null }) return ""
+    return k.associate { it[0] to it[1].toDouble() }.maxBy { it.value }!!.key
+}
 
 /**
  * Сложная

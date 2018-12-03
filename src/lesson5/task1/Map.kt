@@ -220,9 +220,9 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.toSet().int
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    val buf = word.map { "$it" }
-    for (i in 0 until buf.size) {
-        val element = buf[i].toLowerCase()
+    val elm = word.map { "$it" }
+    for (i in 0 until elm.size) {
+        val element = elm[i].toLowerCase()
         if (element !in chars.joinToString().toLowerCase()) return false
     }
     return true

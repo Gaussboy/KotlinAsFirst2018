@@ -3,6 +3,7 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import java.lang.Exception
 
 /**
  * Пример
@@ -72,26 +73,20 @@ fun main(args: Array<String>) {
  * входными данными.
  */
 fun dateStrToDigit(str: String): String {
-    val parts = str.split(" ")
-    if (parts.size != 3) return ""
-    val month = when (parts[1]) {
-        "января" -> "01"
-        "февраля" -> "02"
-        "марта" -> "03"
-        "апреля" -> "04"
-        "мая" -> "05"
-        "июня" -> "06"
-        "июля" -> "07"
-        "августа" -> "08"
-        "сентября" -> "09"
-        "октября" -> "10"
-        "ноября" -> "11"
-        "декабря" -> "12"
-        else -> ""
+    try {
+        val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
+                "сентября", "октября", "ноября", "декабря")
+        val parts = str.split(" ")
+        val day = parts.first().toInt()
+        val month = months.indexOf(parts[1]) + 1
+        val year = parts.last().toInt()
+        if (day > daysInMonth(month, year) || month == 0) return ""
+        return String.format("%02d.%02d.%d", day, month, year)
+    } catch (e: Exception) {
+        return ""
     }
-    return if (month == "" || daysInMonth(month.toInt(), parts[2].toInt()) < parts[0].toInt()) ""
-    else String.format("%02d.%s.%s", parts[0].toInt(), month, parts[2])
 }
+
 
 /**
  * Средняя
@@ -140,7 +135,7 @@ fun dateDigitToStr(digital: String): String {
 fun flattenPhoneNumber(phone: String): String =
         if (Regex("""(?:\+(?:[\s-]*\d)+[\s-]*)?(?:\((?:[\s-]*\d)+[\s-]*\))?(?:[\s-]*\d)+""").matches(phone))
             Regex("""[\s-()]""").replace(phone, "")
-else ""
+        else ""
 
 /**
  * Средняя
@@ -152,9 +147,11 @@ else ""
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int {if (!Regex("""[\d%\-\s]+""").matches(jumps)) return -1
-val part = (Regex("""[^\d]""").split(jumps))
-return part.filter { it.toIntOrNull() != null }.map { it.toInt() }.max()!!}
+fun bestLongJump(jumps: String): Int {
+    if (!Regex("""[\d%\-\s]+""").matches(jumps)) return -1
+    val part = (Regex("""[^\d]""").split(jumps))
+    return part.filter { it.toIntOrNull() != null }.map { it.toInt() }.max()!!
+}
 
 /**
  * Сложная

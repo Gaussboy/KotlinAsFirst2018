@@ -99,25 +99,17 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня",
+            "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    if (!Regex("""\d{2}\.\d{2}\.\d{1,50}""").matches(digital)) return ""
     val parts = digital.split(".")
-    if (parts.size != 3) return ""
-    val month = when (parts[1]) {
-        "01" -> "января"
-        "02" -> "февраля"
-        "03" -> "марта"
-        "04" -> "апреля"
-        "05" -> "мая"
-        "06" -> "июня"
-        "07" -> "июля"
-        "08" -> "августа"
-        "09" -> "сентября"
-        "10" -> "октября"
-        "11" -> "ноября"
-        "12" -> "декабря"
-        else -> ""
-    }
-    return if (month == "" || daysInMonth(parts[1].toInt(), parts[2].toInt()) < parts[0].toInt()) ""
-    else String.format("%d %s %s", parts[0].toInt(), month, parts[2])
+    val day = parts[0].toInt()
+    val oneMonth = parts[1].toInt()
+    if (oneMonth !in 1..12) return ""
+    val month = months[oneMonth - 1]
+    val year = parts[2].toInt()
+    if (day > daysInMonth(oneMonth, year)) return ""
+    return String.format("%s %s %s", day, month, year)
 }
 
 /**
@@ -134,8 +126,7 @@ fun dateDigitToStr(digital: String): String {
  */
 fun flattenPhoneNumber(phone: String): String =
         if (Regex("""(?:\+(?:[\s-]*\d)+[\s-]*)?(?:\((?:[\s-]*\d)+[\s-]*\))?(?:[\s-]*\d)+""").matches(phone))
-            Regex("""[\s-()]""").replace(phone, "")
-        else ""
+            Regex("""[\s-()]""").replace(phone, "") else ""
 
 /**
  * Средняя

@@ -73,18 +73,15 @@ fun main(args: Array<String>) {
  * входными данными.
  */
 fun dateStrToDigit(str: String): String {
-    try {
-        val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
-                "сентября", "октября", "ноября", "декабря")
-        val parts = str.split(" ")
-        val day = parts.first().toInt()
-        val month = months.indexOf(parts[1]) + 1
-        val year = parts.last().toInt()
-        if (day > daysInMonth(month, year) || month == 0) return ""
-        return String.format("%02d.%02d.%d", day, month, year)
-    } catch (e: Exception) {
-        return ""
-    }
+    if (!kotlin.text.Regex("^[0-9]{1,2} [а-я]+ [0-9]+").containsMatchIn(str)) return ""
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
+            "сентября", "октября", "ноября", "декабря")
+    val parts = str.split(" ")
+    val day = parts.first().toInt()
+    val month = months.indexOf(parts[1]) + 1
+    val year = parts.last().toInt()
+    if (day > daysInMonth(month, year) || day == 0 || month == 0) return ""
+    return String.format("%02d.%02d.%d", day, month, year)
 }
 
 
@@ -108,7 +105,7 @@ fun dateDigitToStr(digital: String): String {
     if (oneMonth !in 1..12) return ""
     val month = months[oneMonth - 1]
     val year = parts[2].toInt()
-    if (day > daysInMonth(oneMonth, year)) return ""
+    if (day > daysInMonth(oneMonth, year) || day == 0) return ""
     return String.format("%s %s %s", day, month, year)
 }
 

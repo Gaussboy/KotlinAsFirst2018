@@ -137,7 +137,7 @@ fun flattenPhoneNumber(phone: String): String =
  */
 fun bestLongJump(jumps: String): Int {
     try {
-        if (!Regex("""[\d%\-\s]+""").matches(jumps)) return -1
+        if (!Regex("""([\d-%]*[\d\s%-]*[\d-%]${'$'})""").matches(jumps)) return -1
         val piece = (Regex("""[^\d]""").split(jumps))
         return piece.filter { it.toIntOrNull() != null }.map { it.toInt() }.max()!!
     } catch (e: Exception) {
@@ -156,18 +156,14 @@ fun bestLongJump(jumps: String): Int {
  * При нарушении формата входной строки вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    try {
-        if (!Regex("""[\d%+\s-]+""").matches(jumps)) return -1
-        val piece = jumps.split(" ")
-        val list = mutableListOf<Int>()
-        for (i in 1 until piece.size step 2) {
-            if (piece[i].contains("+")) list.add(piece[i - 1].toInt())
-        }
-        if (list.isEmpty()) return -1
-        return list.max()!!.toInt()
-    } catch (e: Exception) {
-        return -1
+    if (!Regex("""[\d%+\s-]+""").matches(jumps)) return -1
+    val piece = jumps.split(" ")
+    val list = mutableListOf<Int>()
+    for (i in 1 until piece.size step 2) {
+        if (piece[i].contains("+")) list.add(piece[i - 1].toInt())
     }
+    if (list.isEmpty()) return -1
+    return list.max()!!.toInt()
 }
 
 /**

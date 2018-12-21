@@ -174,7 +174,7 @@ fun collatzSteps(x: Int): Int {
     var temp = x
     var steps = 0
     while (temp != 1) {
-        if (temp % 2 ==0) temp /= 2 else temp = temp * 3 + 1
+        if (temp % 2 == 0) temp /= 2 else temp = temp * 3 + 1
         steps++
     }
     return steps

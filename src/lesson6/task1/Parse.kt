@@ -73,7 +73,7 @@ fun main(args: Array<String>) {
  * входными данными.
  */
 fun dateStrToDigit(str: String): String {
-    if (!kotlin.text.Regex("^[0-9]{1,2} [а-я]+ [0-9]+").containsMatchIn(str)) return ""
+    if (!Regex("^[0-9]{1,2} [а-я]+ [0-9]+").containsMatchIn(str)) return ""
     val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
             "сентября", "октября", "ноября", "декабря")
     val parts = str.split(" ")
@@ -137,7 +137,7 @@ fun flattenPhoneNumber(phone: String): String =
  */
 fun bestLongJump(jumps: String): Int {
     try {
-        if (!Regex("""([\d-%]*[\d\s%-]*[\d-%]${'$'})""").matches(jumps)) return -1
+        if (!Regex("""([\d-%]*[\d\s%-]*[\d-%]})""").matches(jumps)) return -1
         val piece = (Regex("""[^\d]""").split(jumps))
         return piece.filter { it.toIntOrNull() != null }.map { it.toInt() }.max()!!
     } catch (e: Exception) {
@@ -200,18 +200,14 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * Все цены должны быть больше либо равны нуля.
  */
 fun mostExpensive(description: String): String {
-    var resultat = ""
-    var cena = -1.0
-    val chasti = description.split(" ", "; ")
-    if (chasti.size % 2 != 0) return ""
-    for (i in 1 until chasti.size step 2) {
-        val priceNow = chasti[i].toDouble()
-        if (priceNow > cena) {
-            cena = priceNow
-            resultat = chasti[i - 1]
-        }
+    try {
+        if (!Regex("""^\S.*[0-9]+""").matches(description)) return ""
+        val pieces = description.split(";")
+
+    } catch (e: Exception) {
+        return ""
     }
-    return resultat
+    return ""
 }
 
 /**

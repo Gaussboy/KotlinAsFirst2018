@@ -4,6 +4,7 @@ package lesson6.task1
 
 import lesson2.task2.daysInMonth
 import java.lang.Exception
+import kotlin.math.max
 
 /**
  * Пример
@@ -200,14 +201,11 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * Все цены должны быть больше либо равны нуля.
  */
 fun mostExpensive(description: String): String {
-    try {
-        if (!Regex("""^\S.*[0-9]+""").matches(description)) return ""
-        val pieces = description.split(";")
-
-    } catch (e: Exception) {
-        return ""
-    }
-    return ""
+    val result = 0
+    if (!Regex("""^\S.*[0-9]+""").matches(description)) return ""
+    val pieces = description.split(";")
+    val mapOfPieces = pieces.map { it.split(" ") }
+    return mapOfPieces.associate { it[0] to it[1].toDouble() }.maxBy { it.value }!!.key
 }
 
 /**

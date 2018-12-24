@@ -60,7 +60,14 @@ fun square(notation: String): Square {
  * Пример: rookMoveNumber(Square(3, 1), Square(6, 3)) = 2
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
-fun rookMoveNumber(start: Square, end: Square): Int = TODO()
+fun rookMoveNumber(start: Square, end: Square): Int {
+    if (start.column == end.column && start.row == end.row) return 0
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
+    var move = 0
+    if (start.column != end.column) move++
+    if (start.row != end.row) move++
+    return move
+}
 
 /**
  * Средняя
@@ -101,7 +108,15 @@ fun rookTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Примеры: bishopMoveNumber(Square(3, 1), Square(6, 3)) = -1; bishopMoveNumber(Square(3, 1), Square(3, 7)) = 2.
  * Слон может пройти через клетку (6, 4) к клетке (3, 7).
  */
-fun bishopMoveNumber(start: Square, end: Square): Int = TODO()
+fun bishopMoveNumber(start: Square, end: Square): Int {
+    if (start.column == end.column && start.row == end.row) return 0
+    if ((start.column + start.row) % 2 != (end.column + end.row) % 2) return -1
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
+    var move = 0
+    if (start.row + start.column != end.row + end.column) move++
+    if (start.column - start.row != end.column - end.row) move++
+    return move
+}
 
 /**
  * Сложная
@@ -143,7 +158,13 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Пример: kingMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
-fun kingMoveNumber(start: Square, end: Square): Int = TODO()
+fun kingMoveNumber(start: Square, end: Square): Int {
+    if (start.column == end.column && start.row == end.row) return 0
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
+    var move = 0
+
+    return move
+}
 
 /**
  * Сложная
@@ -184,8 +205,12 @@ fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Пример: knightMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
  */
-fun knightMoveNumber(start: Square, end: Square): Int = TODO()
-
+fun knightMoveNumber(start: Square, end: Square): Int {
+    if (start.column == end.column && start.row == end.row) return 0
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
+    var move = 0
+    return move
+}
 /**
  * Очень сложная
  *

@@ -1,5 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson8.task2
+
+import kotlin.math.abs
 
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
@@ -83,7 +86,10 @@ fun rookMoveNumber(start: Square, end: Square): Int {
  *          rookTrajectory(Square(3, 5), Square(8, 5)) = listOf(Square(3, 5), Square(8, 5))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun rookTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun rookTrajectory(start: Square, end: Square): List<Square> {
+    val set = setOf(start, Square(start.column, end.row), end)
+    return set.toList()
+}
 
 /**
  * Простая
@@ -136,7 +142,12 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
  *          bishopTrajectory(Square(1, 3), Square(6, 8)) = listOf(Square(1, 3), Square(6, 8))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun bishopTrajectory(start: Square, end: Square): List<Square> {
+    val mList = mutableSetOf(start)
+    if ((start.column + start.row) % 2 != (end.row + end.column) % 2) return emptyList()
+    if (start.column != end.column && start.row != end.row) mList.add(end)
+    return mList.toList()
+}
 
 /**
  * Средняя
@@ -161,9 +172,7 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
 fun kingMoveNumber(start: Square, end: Square): Int {
     if (start.column == end.column && start.row == end.row) return 0
     if (!start.inside() || !end.inside()) throw IllegalArgumentException()
-    var move = 0
-
-    return move
+    return maxOf(abs(start.row - end.row), abs(start.column - end.column))
 }
 
 /**
@@ -211,6 +220,7 @@ fun knightMoveNumber(start: Square, end: Square): Int {
     var move = 0
     return move
 }
+
 /**
  * Очень сложная
  *

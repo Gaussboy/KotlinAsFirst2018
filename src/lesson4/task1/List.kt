@@ -150,9 +150,11 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
 fun times(a: List<Double>, b: List<Double>): Double {
-    var c = 0.0
-    for (i in 0 until a.size) c += a[i] * b[i]
-    return c
+    val ab = a.zip(b) { x, y -> x * y }
+    var C = 0.0
+    for (i in 0 until ab.size)
+        C += ab[i]
+    return C
 }
 
 
@@ -166,9 +168,8 @@ fun times(a: List<Double>, b: List<Double>): Double {
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var poly = 0.0
-    for (i in 0 until p.size) {
+    for (i in 0 until p.size)
         poly += p[i] * pow(x, i.toDouble())
-    }
     return poly
 }
 

@@ -141,6 +141,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = a.all 
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = stockPrices.groupBy({ it.first },
         { it.second }).mapValues { it.value.sum() / it.value.size }
+
 /**
  * Средняя
  *
@@ -271,7 +272,13 @@ fun hasAnagrams(words: List<String>): Boolean = words.map { it.toList().sorted()
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    if (list.isEmpty()) return (-1 to -1)
+    var pair = -1 to -1
+    val list2 = list.mapIndexed { index: Int, it: Int -> it to index }.sortedBy { it.first }
+
+    return pair
+}
 
 /**
  * Очень сложная

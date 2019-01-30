@@ -168,8 +168,11 @@ fun times(a: List<Double>, b: List<Double>): Double {
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var poly = 0.0
-    for (i in 0 until p.size)
-        poly += p[i] * pow(x, i.toDouble())
+    val p2 = p.mapIndexed { i, _ ->
+        p[i] * pow(x, i.toDouble())
+    }
+    for (i in 0 until p2.size)
+        poly += p2[i]
     return poly
 }
 

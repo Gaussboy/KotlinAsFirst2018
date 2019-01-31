@@ -275,7 +275,7 @@ fun hasAnagrams(words: List<String>): Boolean = words.map { it.toList().sorted()
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     if (list.isEmpty()) return (-1 to -1)
     var pair = -1 to -1
-    val list2 = list.mapIndexed { index: Int, it: Int -> it to index }.sortedBy { it.first }
+    val list2 = list.mapIndexed { index, it -> it to index }.sortedBy { it.first }
 
     return pair
 }

@@ -4,6 +4,7 @@ package lesson7.task1
 
 import java.io.File
 
+
 /**
  * Пример
  *
@@ -53,23 +54,7 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    val document = File(inputName).readText()
-    val result = mutableMapOf<String, Int>()
-    for (str in substrings) {
-        var index = 0
-        var amount = 0
-        while (index < document.length) {
-            val found = document.indexOf(string = str, startIndex = index, ignoreCase = true)
-            if (found == -1)
-                break
-            amount++
-            index = found + 1
-        }
-        result[str] = amount
-    }
-    return result
-}
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
 
 
 /**
@@ -85,13 +70,10 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
-val replaceWords = mapOf("ы" to "и", "Ы" to "И", "я" to "а", "Я" to "А", "ю" to "у", "Ю" to "У")
+
 
 fun sibilants(inputName: String, outputName: String) {
-    val outputStream = File(outputName).bufferedWriter()
-    outputStream.write(Regex("(?<=[жчшщ])[ыяю]", RegexOption.IGNORE_CASE)
-            .replace(File(inputName).readText()) { replaceWords[it.value].toString() })
-    outputStream.close()
+    TODO()
 }
 
 /**
@@ -112,17 +94,20 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
+    val reader = File(inputName).readLines()
     val writer = File(outputName).bufferedWriter()
-    val list = File(inputName).readLines().map { it.trim() }
-    val maxList = list.maxBy { it.length }
-    for (line in list) {
-        var bufLine = line
-        var boost = (maxList!!.length - bufLine.length) / 2
-        while (boost > 0) {
-            bufLine = " $bufLine"
-            boost -= 1
+    val list = mutableListOf<String>()
+    var maxLength = 0
+    for (line in reader) {
+        list.add(line.trim())
+    }
+    for (i in list) if (maxLength < i.length) maxLength = i.length
+    for (i in list) {
+        val space = (maxLength - i.length) / 2
+        for (j in 0 until space) {
+            writer.write(" ")
         }
-        writer.write(bufLine)
+        writer.write(i)
         writer.newLine()
     }
     writer.close()
@@ -177,9 +162,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> =
-        File(inputName).readText().toLowerCase().split(Regex("""[^а-яА-ЯёЁa-zA-Z]+""")).filter { it != "" }
-                .groupingBy { it }.eachCount().toList().sortedByDescending { it.second }.take(20).toMap()
+fun top20Words(inputName: String): Map<String, Int> = TODO()
 
 /**
  * Средняя
@@ -245,16 +228,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    val writer = File(outputName).bufferedWriter()
-    val list = File(inputName).readLines()
-    val strList = mutableListOf<String>()
-    for (i in list) {
-        val part = i.toLowerCase().toList()
-        if (i.toLowerCase().toSet().size == part.size)
-            strList.add(i)
-    }
-    writer.write(strList.filter { its -> its.length == strList.maxBy { it.length }!!.length }.joinToString())
-    writer.close()
+    TODO()
 }
 
 /**

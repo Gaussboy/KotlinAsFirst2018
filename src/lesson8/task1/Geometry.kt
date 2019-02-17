@@ -2,10 +2,7 @@
 package lesson8.task1
 
 import lesson1.task1.sqr
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /**
  * Точка на плоскости
@@ -154,14 +151,22 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = TODO()
+fun lineBySegment(s: Segment): Line {
+    var angle = atan(abs(s.end.y - s.begin.y) / abs(s.end.x - s.begin.x))
+    if (angle < 0) angle += PI
+    return Line(Point(s.end.x, s.end.y), angle)
+}
 
 /**
  * Средняя
  *
  * Построить прямую по двум точкам
  */
-fun lineByPoints(a: Point, b: Point): Line = TODO()
+fun lineByPoints(a: Point, b: Point): Line {
+    var angle = atan(abs(b.y - a.y) / abs(b.x - a.y))
+    if (angle < 0) angle += PI
+    return Line(a, angle)
+}
 
 /**
  * Сложная

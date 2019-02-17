@@ -115,11 +115,11 @@ fun rookTrajectory(start: Square, end: Square): List<Square> {
  * Слон может пройти через клетку (6, 4) к клетке (3, 7).
  */
 fun bishopMoveNumber(start: Square, end: Square): Int {
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
     if (start.column == end.column && start.row == end.row) return 0
     if ((start.column + start.row) % 2 != (end.column + end.row) % 2) return -1
-    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
     var move = 0
-    if (start.row + start.column != end.row + end.column) move++
+    if (start.row + start.column != end.row + end.column || start.column - start.row != end.column - end.row) move++
     if (start.column - start.row != end.column - end.row) move++
     return move
 }
@@ -143,10 +143,35 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
 fun bishopTrajectory(start: Square, end: Square): List<Square> {
-    val mList = mutableSetOf(start)
+    val setStart = mutableSetOf(start)
+    val setEnd = mutableSetOf(end)
+    val cells = mutableListOf<Square>()
+    if (start.column == end.column && start.row == end.row) return listOf(start)
     if ((start.column + start.row) % 2 != (end.row + end.column) % 2) return emptyList()
-    if (start.column != end.column && start.row != end.row) mList.add(end)
-    return mList.toList()
+    if (abs(start.row - end.row) == abs(start.column - end.column)) return listOf(start, end)
+    for (i in 1 until 8) {
+        var cell1 = Square(start.column + i, start.row + i)
+        var cell2 = Square(start.column - i, start.row + i)
+        var cell3 = Square(start.column + i, start.row - i)
+        var cell4 = Square(start.column - i, start.row - i)
+        if (cell1.inside()) setStart.add(cell1)
+        if (cell2.inside()) setStart.add(cell2)
+        if (cell3.inside()) setStart.add(cell3)
+        if (cell4.inside()) setStart.add(cell4)
+        cell1 = Square(end.column + i, end.row + i)
+        cell2 = Square(end.column - i, end.row + i)
+        cell3 = Square(end.column + i, end.row - i)
+        cell4 = Square(end.column - i, end.row - i)
+        if (cell1.inside()) setEnd.add(cell1)
+        if (cell2.inside()) setEnd.add(cell2)
+        if (cell3.inside()) setEnd.add(cell3)
+        if (cell4.inside()) setEnd.add(cell4)
+    }
+    val setCells = setStart.intersect(setEnd).toList()
+    cells.add(start)
+    if (setCells.isNotEmpty()) cells.add(setCells[0])
+    cells.add(end)
+    return cells
 }
 
 /**
